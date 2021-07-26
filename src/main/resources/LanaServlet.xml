@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:mvc="http://www.springframework.org/schema/mvc">
+    <mvc:annotation-driven />
+    <import resource="applicationContext.xml" />
+
+</beans>
