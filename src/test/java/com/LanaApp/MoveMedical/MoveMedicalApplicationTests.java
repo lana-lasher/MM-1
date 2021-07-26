@@ -46,7 +46,6 @@ public class MoveMedicalApplicationTests {
 
 	private ObjectMapper objectMapper;
 
-	//@Autowired
 	private MockMvc mockMvc;
 
 	@Before
