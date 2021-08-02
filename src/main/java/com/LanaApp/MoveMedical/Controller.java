@@ -6,8 +6,10 @@ import dto.MoviesDto;
 import implementation.DeleteMovie;
 import implementation.DeleteMovieCast;
 import implementation.DeleteStudio;
+import implementation.Dynamic;
 import implementation.ReadImplementation;
 import implementation.SaveImplementation;
+import implementation.dto.World;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +22,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
+import java.math.BigDecimal;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 @RestController
@@ -104,10 +108,39 @@ public class Controller {
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<String> handleException(Exception ex) {
-
         return  new ResponseEntity<String>(ex.getMessage(),HttpStatus.BAD_REQUEST);
     }
 
+    @RequestMapping(value = "/addNewRecords", method = RequestMethod.POST)
+    public ResponseEntity<String> addRecords(@RequestBody String json){
+        Dynamic d = new Dynamic();
+        try {
+            d.parseInput(json);
+        }catch (Exception e){
+            log.info("error "+e.getMessage());
+        }
+        return new ResponseEntity<String>("done",HttpStatus.OK);
+    }
+
+    @RequestMapping(value = {"/getRecsByParentId/{parentId}", "/getRecsByParentId"}, method = RequestMethod.GET)
+    public LinkedHashMap<String,List<World>> getAllByParentId(@PathVariable(required = false) BigDecimal parentId ) throws Exception {
+        Dynamic d = new Dynamic();
+        LinkedHashMap<String,List<World>> result = new LinkedHashMap<>();
+        try {
+            result = d.getAllByParentId(parentId);
+        }catch (Exception e){
+            log.info("error "+e.getMessage());
+        }
+        //return new ResponseEntity<String>("done",HttpStatus.OK);
+        return result;
+    }
+
+    @RequestMapping(value = "/deleteRecsByParentId/{parentId}", method = RequestMethod.GET)
+    public ResponseEntity<String> deleteAllByParentId(@PathVariable long parentId) throws Exception {
+        Dynamic d = new Dynamic();
+        return d.deleteAllByParentId(parentId);
+
+    }
 
 
 
